@@ -60,62 +60,24 @@ function readStdin() {
  * @returns {Number[]} 
  */
 function sort(data) {
-    // ------------ phase 1: calculating frequencies of every item ------------
-    const frequencies = {
-        // {key} is the data[] item;
-        // {value} is the frequency of that item
-    };
-    for (let i = 0; i < data.length; i++) {
-        const item = data[i];
-        if (!frequencies[item]) {
-            frequencies[item] = 0;
-        }
-        frequencies[item]++;
-    }
-
-
-    // ------------ phase 2: sort frequencies and values by (freq ascending) ------------
-    // taking into accounting that there might be > 1 item sharing same frequency
-    const frequenciesSorted = [
-        // {
-        //      frequency,
-        //      values: [] // items that have same frequency; sorted in asc
-        // }
-    ];
-    for (let item in frequencies) {
-        const frequency = frequencies[item];
-        // pick proper `frequenciesSorted` value or create a new one that is dedicated to current `frequency`
-        let i = 0;
-        while (i < frequenciesSorted.length && frequenciesSorted[i].frequency < frequency) {
-            i++;
-        }
-        if (!frequenciesSorted[i] || frequenciesSorted[i].frequency > frequency) {
-            frequenciesSorted.splice(i, 0, { frequency, values: [] });
-        }
-
-        const values = frequenciesSorted[i].values; // now `frequenciesSorted[i]` corresponds to current `frequency`
-
-        // go ahead with placing `item` into `values[]` at proper place
-        item = +item; // String key --> Number
-        i = 0;
-        while (i < values.length && values[i] < item) {
-            i++;
-        }
-        values.splice(i, 0, item);
-    }
-
-
-    // ------------ phase 3: expand sorted frequencies ------------
-    return frequenciesSorted.reduce(
-        (result, {frequency, values}) => values.reduce(
-            (_res, value) => {
-                for (let i = 0; i < frequency; i++) { _res.push(value); }
-                return _res;
+        // 1) sorting descending
+    return data.sort((a, b) => a - b)
+        // 2) splitting into series => [ [a, a, a,...], [b, b,...],... ]
+        .reduce(
+            (series, n) => {
+                let chunk = series[ series.length - 1 ];
+                if (!chunk || n !== chunk[0]) {
+                    chunk = [];
+                    series.push(chunk);
+                }
+                chunk.push(n);
+                return series;
             },
-            result
-        ),
-        []
-    );
+            [])
+        // 3) sorting series by length
+        .sort((a, b) => a.length - b.length)
+        // 4) expanding the series
+        .reduce((result, serie) => result.concat(serie), []);
 }
 
 
