@@ -20,3 +20,4 @@ For the sake of convenience following commands can run the file;
 - `npm run ts -- path/to/the/file.ts`
 - `node -r ts-node/register/transpile-only path/to/the/file.ts`
 - `npm run test` to run Mocha tests (any `**/*.spec.ts` are checked)
+- `npm run test:file -- path/to/the/file.spec.ts` to run Mocha against given file(s)

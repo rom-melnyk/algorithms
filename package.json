@@ -13,7 +13,8 @@
   "devDependencies": {},
   "scripts": {
     "ts": "node -r ts-node/register/transpile-only",
-    "test": "mocha -r ts-node/register/transpile-only '*/**/*.spec.ts'"
+    "test": "mocha -r ts-node/register/transpile-only '*/**/*.spec.ts'",
+    "test:file": "mocha -r ts-node/register/transpile-only"
   },
   "repository": {
     "type": "git",
