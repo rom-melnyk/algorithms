@@ -12,13 +12,13 @@ export class Receipt {
   public readonly transactionAmount: number;
 
   public constructor(rcp: string) {
-    const [amountStr, creditor, debtorsStr] = rcp.split('') as [string, Person, string];
+    const [amountStr, creditor, debtorsStr] = rcp.split(' ') as [string, Person, string];
     const debtors = debtorsStr.split(',') as Person[];
 
     validatePeople([creditor, ...debtors]);
 
     this.creditor = creditor;
     this.debtors = debtors.filter((d) => d !== creditor); // Excluding creditor
-    this.transactionAmount = parseFloat(amountStr) / debtors.length; // Each creditor owed to debtor
+    this.transactionAmount = parseFloat(amountStr) / debtors.length; // The amount for each valuable transaction
   }
 }
