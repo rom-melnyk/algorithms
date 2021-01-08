@@ -1,6 +1,7 @@
 import * as receipts from './receipts.json';
 import { Transaction } from './helpers/transaction';
 import { Person } from './helpers/types';
+import { Receipt } from './helpers/receipt';
 
 export class Calculator {
   public constructor(
@@ -14,7 +15,13 @@ export class Calculator {
 
   private calculateBills() {
     // ------------ Phase 1: generate all transactions from all attendees to ------------
-    const transactions = this.receipts.reduce((allTransactions, receipt) => {
+    const transactions = this.receipts.flatMap((rcp) => {
+      const { creditor, debtors, transactionAmount } = new Receipt(rcp);
+      return debtors.map((d) => new Transaction(d, creditor, transactionAmount));
+    })
+
+
+    reduce((allTransactions, receipt) => {
       const [amountStr, to, attendees] = receipt.split('');
       const amount = parseFloat(amountStr);
 
