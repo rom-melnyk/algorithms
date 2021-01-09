@@ -5,26 +5,26 @@ import { Person, validatePeople } from './types';
  */
 export class Transaction {
   public constructor(
-    public readonly from: Person,
-    public readonly to: Person,
-    public readonly amount: number,
+    public readonly debtor: Person,
+    public readonly creditor: Person,
+    public amount: number,
   ) {
-   validatePeople([from, to]);
+   validatePeople([debtor, creditor]);
   }
 
-  public isSimilarTo(t: Transaction) {
-    return this.from === t.from && this.to === t.to;
+  public get id() {
+    return `${this.debtor} - ${this.creditor}`;
   }
 
-  public isInvertedTo(t: Transaction) {
-    return this.from === t.to && this.to === t.from;
+  public get reverseId() {
+    return `${this.creditor} - ${this.debtor}`;
   }
 
-  public add(t: Transaction) {
-    return new Transaction(this.from, this.to, this.amount + t.amount);
+  public addAmount(amount: number) {
+    this.amount += amount;
   }
 
   public toString() {
-    return `${this.from} pays ${this.to} ${this.amount.toFixed(2)}`;
+    return `${this.debtor} pays ${this.creditor} ${this.amount.toFixed(2)}`;
   }
 }
