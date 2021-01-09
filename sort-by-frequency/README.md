@@ -11,7 +11,7 @@
 ## Run
 **Windows with Cygwin:**
 ```
-( cat data.txt | wc -l && cat data.txt ) | node sort-by-freq.js
+( cat data.txt | wc -l && cat data.txt ) | node -r ts-node/register/transpile-only sort-by-freq.ts
 ```
 
 **Linux:** same way but replace `()` with `{}`.
