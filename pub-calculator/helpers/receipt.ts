@@ -1,4 +1,4 @@
-import { people, Person, validatePeople } from './types';
+import { Person, validatePeople } from './types';
 
 /**
  * Manage Receipt record:
