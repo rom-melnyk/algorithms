@@ -38,19 +38,17 @@ export class Calculator {
       .from(
         // ------ Phase 2: combine transactions into "from-to" groups ------
         // Multiple transactions like "Roman pays Astrid" are expected (originating from multiple receipts).
-        groupBy(allTransactions, ({ id }) => id)
-          .values()
+        groupBy(allTransactions, 'id').values()
       )
       // ------ Phase 3: merge "A -> R" and "R -> A" together ------
       // Think {R -> A, €15} == {A -> R, -€15}.
       .reduce((grouped, transactions) => {
         const { id, oppositeId } = transactions[0];
-        const oppositeTransactions = grouped.get(oppositeId);
-        if (oppositeTransactions) {
+        const oppositeGroup = grouped.get(oppositeId);
+        if (oppositeGroup) {
           // Found an "opposite" group? — Join it (as "opposite" transactions).
-          return grouped.set(oppositeId, oppositeTransactions.concat(
-            transactions.map((t) => t.toOpposite())
-          ));
+          const oppositeTransactions = transactions.map((t) => t.toOpposite());
+          return grouped.set(oppositeId, oppositeGroup.concat(oppositeTransactions));
         } else {
           // Otherwise establish the new group.
           return grouped.set(id, transactions);
@@ -59,22 +57,19 @@ export class Calculator {
 
     // ------ Phase 4: merge all transactions inside "from-to" groups ------
     // {R -> A, €15}  ....
-    // {R -> A, €5}      :----> {R -> A, €23}
-    // {R -> A, €3}   ...:
+    // {R -> A, €5}      :----> {R -> A, €17}
+    // {R -> A, -€3}   ...:
     const mergedTransactions = Array.from(groupedTransactions.values())
       .map((transactions) => {
-        const { debtor, creditor, id: groupId } = transactions[0];
-        const totalAmount = transactions.reduce((sum, { amount, id: currentId }) => {
-          // Sum transactions of same direction; subtract "opposite" transactions.
-          return sum + (currentId === groupId ? amount : -amount);
-        }, 0);
+        const { debtor, creditor } = transactions[0];
+        const totalAmount = transactions.reduce((sum, { amount }) => sum + amount, 0);
         return new Transaction(debtor, creditor, totalAmount);
       })
       // ------ Phase 5: normalize negative transactions ------
       // {A -> R, -€15} should be stored as {R -> A, €15}.
       .map((transaction) => transaction.amount > 0 ? transaction : transaction.toOpposite());
 
-    return groupBy(mergedTransactions, (tr) => tr.id);
+    return groupBy(mergedTransactions, 'id');
   }
 }
 

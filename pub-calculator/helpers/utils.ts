@@ -1,20 +1,20 @@
 /**
- * Group array of objects into a `Map<hash, objects[]>`
- *                                     :      :
- *                                     :      :.. All the objects that share same value of the `hash`.
+ * Group array of objects into a `Map<groupName, objects[]>`
+ *                                     :           :
+ *                                     :           :.. All the objects that share similar value of the `key` property
  *                                     :
- *                                     :......... Is a product of `getGroupingHash(object)`.
+ *                                     :......... Is the `object[key]`
  */
-export function groupBy<K extends string | number, V>(elements: V[], getGroupingHash: (el: V) => K): Map<K, V[]> {
+export function groupBy<K extends keyof V, V>(elements: V[], key: K): Map<V[K], V[]> {
   return elements.reduce((grouped, el) => {
-    const key = getGroupingHash(el);
-    let group = grouped.get(key);
+    const groupName = el[key] ;
+    let group = grouped.get(groupName);
     if (!group) {
       group = new Array<V>();
-      grouped.set(key, group);
+      grouped.set(groupName, group);
     }
 
     group.push(el);
     return grouped;
-  }, new Map<K, V[]>());
+  }, new Map<V[K], V[]>());
 }
