@@ -1,6 +1,7 @@
 .vscode/
 .idea/
 .tsc-out/
+.DS_Store
 
 node_modules/
 *.log
