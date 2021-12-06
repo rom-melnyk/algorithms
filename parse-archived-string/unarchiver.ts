@@ -1,11 +1,37 @@
-import { WholeStringLexem } from './lexem/whole-string-lexem';
-
 /**
  * See the EBNF notation in {@file ./README.md}.
- * The topmost element of the input is the `WholeStringLexem`
- * which is `(WordLexem | SequenceLexem)` repeated 1+ times.
+ * Pay attention on following part of the EBNF:
+ *
+ *     ```
+ *     sequence        = number, "[", whole_string, "]" ;
+ *     whole_string    = word | sequence, { word | sequence } ;
+ *     ````
+ *
+ * In other words, the `whole_string` corresponds to the input itself,
+ * and the `whole_string` can reside inside the repeated `sequence`.
+ *
+ * Another point, the `sequence[word]` can be "unarchived" non-recursively.
  */
 export function unarchive(input: string): string {
-  const wholeString = new WholeStringLexem(input, 0);
-  return wholeString.parsed;
+  return replaceSequence(input);
+}
+
+const isSequence = /\d+\[/;
+const nonRecursiveSequence = /(\d+)\[([a-z]+)\]/;
+
+function replaceSequence(input: string): string {
+  return isSequence.test(input)
+    // Proceed deeper as `sequence[sequence[...]]` is allowed.
+    ? replaceSequence(
+      // "Unarchive" non-recursive `sequence[word]` entry.
+      input.replace(
+        nonRecursiveSequence,
+        (_, number, sequenceContent) => repeat(number, sequenceContent)
+      )
+    )
+    : input;
+}
+
+function repeat(times: string | number, text: string): string {
+  return Array(Number(times)).fill(text).join('');
 }
