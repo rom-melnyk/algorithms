@@ -14,6 +14,8 @@ Every algorithm/version-of-realization has separate branch. So perform `git bran
 Just a bare minimum to run Typescript (`typescript`, `ts-node`) + Mocha as test engine + appropriate `@types/*`.  
 No third party libs used.
 
+The `py/*` branches use Python v3.8+.
+
 ## Typescript
 
 For the sake of convenience following commands can run the file;
