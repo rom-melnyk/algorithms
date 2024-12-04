@@ -2,12 +2,12 @@ import * as assert from 'assert';
 import { Calculator } from './pub-calculator';
 import * as receipts from './receipts.json';
 
-describe('', () => {
+describe('Pub Calculator', () => {
   let calculator: Calculator;
 
   beforeEach(() => calculator = new Calculator(receipts));
 
-  it('should print bills (simple calculation technik)', () => {
+  it('should print bills (simple calculation technic)', () => {
     const bills = calculator.getBills();
     assert.deepStrictEqual(bills, [
       'Tim pays Mary 9.45',
