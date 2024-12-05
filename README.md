@@ -7,7 +7,7 @@ Every algorithm/version-of-realization has separate branch. So perform `git bran
 
 1. **Sort by frequency:** branches started with `sort-by-freq`.
 2. **Pub calculator:** `pub-calculator`.
-3. **Parse archived string** `parse-archive-string`.
+3. **Parse archived string** `infix2postfix-archive-string`.
 
 ## Dependencies
 

@@ -7,12 +7,12 @@ describe('Receipt', () => {
     assert.throws(() => new Receipt('1 Asdf Tim,Roman'));
   });
 
-  it('parse creditor', () => {
+  it('infix2postfix creditor', () => {
     const rcp = new Receipt('1 Roman Roman,Tim,Tim,Roman,Astrid')
     assert.deepStrictEqual(rcp.creditor, 'Roman');
   });
 
-  it('parse debtors (exclude not include creditor)', () => {
+  it('infix2postfix debtors (exclude not include creditor)', () => {
     const rcp = new Receipt('1 Roman Roman,Tim,Tim,Roman,Astrid')
     assert.deepStrictEqual(rcp.debtors, ['Tim', 'Tim', 'Astrid'] as Person[]);
   });
