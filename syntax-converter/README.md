@@ -1,5 +1,26 @@
 # Syntax converter
 
+
+## Tokenize
+
+Parse the arithmetical expression with parentheses into a hierarchical structure:
+
+```
+Input:   "A + B * (C * (D - E) + (F - G))"
+Output:  [
+           "A", "+", "B", "*",
+           [
+             "C", "*",
+             ["D", "-", "E"],
+             "+",
+             ["F", "-", "G"],
+           ]
+         ]
+         
+         // ...or similar via objects
+```
+
+
 ## Infix → Postfix
 
 Convert the Infix notation into the Postfix:

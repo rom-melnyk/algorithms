@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import * as assert from 'node:assert';
 import { Calculator } from './pub-calculator';
 import * as receipts from './receipts.json';
 

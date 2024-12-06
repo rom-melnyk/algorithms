@@ -1,4 +1,4 @@
-import * as assert from "assert"
+import * as assert from "node:assert"
 import { infix2postfix } from "./syntax-converter"
 
 describe("Syntax Converter", () => {

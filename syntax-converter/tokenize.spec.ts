@@ -1,4 +1,4 @@
-import * as assert from "assert"
+import * as assert from "node:assert"
 import { isOperand, isOperator, tokenize } from "./tokenize"
 
 describe("Syntax Parser / Tokenize", () => {
@@ -9,7 +9,7 @@ describe("Syntax Parser / Tokenize", () => {
     ] as Array<{ input: string[]; expected: string }>
 
     data.forEach(({ input, expected }) => {
-      it(`should consider "${input.join(', ')}" as operands`, () => {
+      it(`should consider "${input.join(', ')}" as ${expected ? "" : "not "}operands`, () => {
         input.forEach(ch => assert.equal(isOperand(ch), expected))
       })
     })
@@ -22,7 +22,7 @@ describe("Syntax Parser / Tokenize", () => {
     ] as Array<{ input: string[]; expected: string }>
 
     data.forEach(({ input, expected }) => {
-      it(`should consider "${input.join(', ')}" as operator`, () => {
+      it(`should consider "${input.join(', ')}" as ${expected ? "" : "not "}operator`, () => {
         input.forEach(ch => assert.equal(isOperator(ch), expected))
       })
     })
